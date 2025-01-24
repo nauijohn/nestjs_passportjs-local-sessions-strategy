@@ -1,4 +1,4 @@
-import { CustomLoggerService } from 'src/custom-logger/custom-logger.service';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
@@ -12,11 +12,14 @@ import {
   Post,
 } from '@nestjs/common';
 
+import { CustomLoggerService } from '../custom-logger/custom-logger.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
+@Serialize(UserDto)
 export class UsersController {
   constructor(
     @InjectMapper()

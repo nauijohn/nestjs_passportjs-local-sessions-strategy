@@ -1,16 +1,42 @@
+import { plainToInstance } from 'class-transformer';
+import { Request } from 'express';
 import { map, Observable } from 'rxjs';
+import { CustomLoggerService } from 'src/custom-logger/custom-logger.service';
 
-import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import {
+  CallHandler,
+  ExecutionContext,
+  NestInterceptor,
+  UseInterceptors,
+} from '@nestjs/common';
 
-export class SerializeInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('I am running before the handler', context);
+interface ClassContructor {
+  new (...args: any[]): {};
+}
+
+class SerializeInterceptor implements NestInterceptor {
+  private loggerService: CustomLoggerService;
+
+  constructor(private readonly dto: ClassContructor) {
+    this.loggerService = new CustomLoggerService();
+    this.loggerService.parentClassName = '[SerializeInterceptor]';
+  }
+
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+    const request = context.switchToHttp().getRequest() as Request;
+    this.loggerService.requestId = `[${request.headers['requestId']}]`;
+    this.loggerService.url = `[${request.method} ${request.url.replace('/api/v1', '')}]`;
 
     return next.handle().pipe(
-      map((data: unknown) => {
-        console.log('I am running before sending the response', data);
-        return data;
+      map((data: ClassContructor) => {
+        return plainToInstance(this.dto, data, {
+          excludeExtraneousValues: true,
+        });
       }),
     );
   }
+}
+
+export function Serialize(dto: ClassContructor) {
+  return UseInterceptors(new SerializeInterceptor(dto));
 }

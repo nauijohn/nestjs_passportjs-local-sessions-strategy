@@ -18,11 +18,11 @@ export class CustomLoggerService
   public parentClassName = `[${this.parentClass?.constructor?.name}]`;
   private LOG_ENV = true;
   private NODE_ENV = 'test';
-  private readonly requestId = this.request
+  public requestId = this.request
     ? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `[${this.request.headers.requestId}]`
     : '';
-  private readonly url = (this.request
+  public url = (this.request
     ? `[${this.request.method} ${this.request.originalUrl}]`
     : ''
   ).replace('/api/v1', '');

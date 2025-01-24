@@ -1,4 +1,3 @@
-import { CustomLoggerService } from 'src/custom-logger/custom-logger.service';
 import { Repository } from 'typeorm';
 
 import { Mapper } from '@automapper/core';
@@ -10,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { CustomLoggerService } from '../custom-logger/custom-logger.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './user.entity';
