@@ -1,0 +1,32 @@
+# name: backend_nestjs_auth-sessions
+services:
+  api:
+    container_name: backend_nestjs_auth-sessions-container
+    image: backend_nestjs_auth-sessions-image
+    environment:
+      - PORT=3000
+    ports:
+      - '3000:3000'
+    expose:
+      - 3000
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health-check']
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - '3307:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

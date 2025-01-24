@@ -1,0 +1,20 @@
+# name: backend_nestjs_auth-sessions
+services:
+  api:
+    build:
+      context: ../
+      dockerfile: .docker/app/Dockerfile
+      target: dev
+    environment:
+      - IS_DOCKER=true
+      - NODE_ENV=dev
+    env_file:
+      - ../.env.dev
+    command: ['npm', 'run', 'start:dev']
+    volumes:
+      - ../:/app
+      - /app/node_modules
+    labels:
+      - com.host.description=dev
+    depends_on:
+      - db
