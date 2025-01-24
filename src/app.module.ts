@@ -5,9 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AuthModule } from './auth/auth.module';
 import { CustomLoggerModule } from './custom-logger/custom-logger.module';
 import { CustomLoggerService } from './custom-logger/custom-logger.service';
-import { CustomTypeOrmLogger } from './custom-logger/custom-typeorm-logger.service';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { RequestIdMiddleware } from './middlewares/request-id.middleware';
@@ -34,8 +34,8 @@ import { UsersModule } from './users/users.module';
         entities: ['dist/**/*.entity{.ts,.js}'],
         synchronize: true,
         autoLoadEntities: true,
-        logging: 'all',
-        logger: new CustomTypeOrmLogger(loggerService),
+        // logging: false,
+        // logger: false || new CustomTypeOrmLogger(loggerService),
       }),
     }),
     AutomapperModule.forRoot({
@@ -43,6 +43,7 @@ import { UsersModule } from './users/users.module';
     }),
     CustomLoggerModule,
     UsersModule,
+    AuthModule,
   ],
   providers: [
     {

@@ -1,3 +1,6 @@
+import * as session from 'express-session';
+import * as passport from 'passport';
+
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -5,6 +8,20 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //#region session and passport setup
+  app.use(
+    session({
+      secret: 'test',
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 60000 },
+    }),
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
+  //#endregion
+
   app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,

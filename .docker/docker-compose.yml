@@ -1,7 +1,7 @@
 # name: backend_nestjs_auth-sessions
 services:
   api:
-    container_name: backend_nestjs_auth-sessions-container
+    container_name: backend_nestjs_auth-sessions-api-1
     image: backend_nestjs_auth-sessions-image
     environment:
       - PORT=3000

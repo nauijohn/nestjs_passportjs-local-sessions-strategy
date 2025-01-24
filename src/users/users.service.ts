@@ -38,16 +38,21 @@ export class UsersService {
   async findOne(id: string) {
     this.loggerService.log('findOne...');
 
-    const user = await this.repository.findOneBy({ id });
-    if (!user) throw new NotFoundException('User not found');
+    return await this.repository.findOneBy({ id });
+  }
 
-    return user;
+  async findOneByEmail(email: string) {
+    this.loggerService.log('findOneByEmail...');
+
+    return await this.repository.findOneBy({ email });
   }
 
   async update(id: string, dto: UpdateUserDto) {
     this.loggerService.log('update...');
 
     const user = await this.findOne(id);
+    if (!user) throw new NotFoundException('User not found');
+
     const newUser = structuredClone(user);
     Object.assign(newUser, dto);
     if (JSON.stringify(user) === JSON.stringify(newUser))
@@ -60,6 +65,7 @@ export class UsersService {
     this.loggerService.log('delete...');
 
     const user = await this.findOne(id);
+    if (!user) throw new NotFoundException('User not found');
 
     return this.repository.remove(user);
   }
