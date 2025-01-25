@@ -19,7 +19,7 @@ import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { UserDto } from './dtos/user.dto';
-import { AuthenticatedGuard } from './guards/authenticated.guards';
+import { AuthenticatedGuard } from './guards/authenticated.guard';
 
 @Controller('auth')
 export class AuthController {
